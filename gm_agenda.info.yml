@@ -1,0 +1,5 @@
+name: 'MG Agenda'
+type: module
+description: 'Custom Agenda.'
+core_version_requirement: ^8.9.1 || ^9
+package: 'GM'

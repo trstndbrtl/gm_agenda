@@ -1,0 +1,16 @@
+{% include path_module ~ '/templates/partials/gm-agenda-header.html.twig' %}
+{% include path_module ~ '/templates/partials/gm-agenda-filters.html.twig' %}
+<div id="gm-main-agenda" class="uk-section">
+  <div class="uk-container uk-container-small">
+    <div id="gm-main-agenda-msg">
+      {{ 'Your voice matters, don\'t miss your turn.'|t}}
+    </div>
+    {% if is_today == 'today' %}
+      {% include path_module ~ '/templates/partials/gm-agenda-body-today.html.twig' %}
+    {% elseif is_today == 'upcoming' %}
+      {% include path_module ~ '/templates/partials/gm-agenda-body-upcoming.html.twig' %}
+    {% else %}
+      {% include path_module ~ '/templates/partials/gm-agenda-body-between.html.twig' %}
+    {% endif %}
+  </div>
+</div>

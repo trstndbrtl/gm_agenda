@@ -1,0 +1,96 @@
+{% set regions_name = filter_regions ? filter_regions.label : null %}
+<div class="uk-section gm-filter">
+  <div class="uk-container uk-container-small">
+    <div class="gm-filter-w">
+      <div class="gm-nav-left">
+        {% if pager_data and pager_data is not empty %}
+          <div class="gm-menu-ul">
+            {% if all_filter_regions is not empty %}
+              <ul class="gm-menu gm-filter-total">
+                <li class="gm-nav-i page-total-items">
+                  <span>{{pager_data.total}} {{'events'|t}}</span>
+                </li>
+              </ul>
+              <ul class="gm-menu gm-filter-region">
+                <li class="gm-nav-i uk-visible@s"><span class="gm-label">{{'filter'|t}}</span></li>
+                <li class="gm-nav-i page-btn-w">
+                  <button class="gm-btn-open" aria-expanded="false" data-ariacontrols="gm-trgt-region">{{regions_name ? regions_name : 'Regions'}}</button>
+                  {% if all_filter_regions is not empty %}
+                    <ul id="gm-trgt-region" class="gm-menu-w">
+                      {% for key, rg in all_filter_regions %}
+                        <li class="gm-nav-i-s">
+                          <a href="{{ path('gm_agenda.agenda_by_month', {'month': current_data.month, 'year': current_data.year}) }}/{{rg.path}}?page=0&ipp={{pager_data.num_items}}" class="page-link">{{rg.label}}</a>
+                        </li>
+                      {% endfor %} 
+                    </ul>
+                  {% endif %}
+                </li>
+              </ul>
+            {% endif %}
+          </div>
+          <div class="gm-menu-ul">
+              {% if pager_data.total > 1 %}
+                <ul class="gm-menu gm-filter-items uk-visible@s">
+                  <li class="gm-nav-i"><span class="gm-label">{{'Events per page'|t }}</span></li>
+                  <li class="gm-nav-i page-btn-w">
+                    <button class="gm-btn-open" aria-expanded="false" data-ariacontrols="gm-trgt-items">{{pager_data.num_items ? pager_data.num_items : 10}}</button>
+                    <ul id="gm-trgt-items" class="gm-menu-w">
+                      {% for n_i in ['10', '25', '50'] %}
+                        <li class="gm-nav-i-s {{ n_i == pager_data.num_items ? 'uk-active' : ''}}">
+                          <a href="{{ path('gm_agenda.agenda_by_month', {'month': current_data.month, 'year': current_data.year}) }}{{regions_fr}}?page={{pager_data.page}}&ipp={{n_i}}" class="page-link">{{ n_i }}</a>
+                        </li>
+                      {% endfor %}
+                    </ul>
+                  </li>
+                </ul>
+              {% endif %}
+              {% if pager_data.total > pager_data.num_items %}
+                <ul class="gm-menu gm-filter-page">
+                  <li class="gm-nav-i uk-disabled">
+                    <span class="gm-label">{{'Pages'|t}}</span>
+                  </li>
+                  {% set regions_fr = filter_regions ? '/' ~ filter_regions.path : '' %}
+                  <li class="gm-nav-i gm-nav-i-n gm-pgnt-prev{{pager_data.page == 0 ? ' uk-disabled' : ''}}">
+                    <a title="{{ 'Previous'|t }}" href="{{ path('gm_agenda.agenda_by_month', {'month': current_data.month, 'year': current_data.year}) }}{{regions_fr}}?page={{pager_data.page - 1 }}&ipp={{pager_data.num_items}}" class="page-link"><i class="bi bi-chevron-left"></i></a>
+                  </li>
+                  {% set total_number_page = (pager_data.total / pager_data.num_items)|round(0, 'ceil') %}
+                  <li class="gm-nav-i page-btn-w">
+                    <button class="gm-btn-open" aria-expanded="false" data-ariacontrols="gm-trgt-page">{{pager_data.page ? pager_data.page + 1 : 1}}</button>
+                    <ul id="gm-trgt-page" class="gm-menu-w">
+                      {% for i in range(1, total_number_page) %}
+                        <li class="gm-nav-i-s gm-pgnt-nav{{ i == (pager_data.page + 1) ? ' uk-active' : ''}}">
+                          <a href="{{ path('gm_agenda.agenda_by_month', {'month': current_data.month, 'year': current_data.year}) }}{{regions_fr}}?page={{ i - 1}}&ipp={{pager_data.num_items}}" class="page-link">{{ i}}</a>
+                        </li>
+                      {% endfor %}
+                    </ul>
+                  </li>
+                  <li class="gm-nav-i-n gm-pgnt-next{{pager_data.page == total_number_page ? ' uk-disabled' : ''}}">
+                    <a title="{{ 'Next'|t }}" href="{{ path('gm_agenda.agenda_by_month', {'month': current_data.month, 'year': current_data.year}) }}{{regions_fr}}?page={{pager_data.page + 1}}&ipp={{pager_data.num_items}}" class="page-link"><i class="bi bi-chevron-right"></i></a>
+                  </li>
+                </ul>
+              {% endif %}
+          </div>
+        {% endif %}
+      </div>
+      <div class="gm-nav-right gm-mn-agenda">
+        <ul class="gm-nav-w gm-flex gm--{{is_today}}">
+          <li class="gm-nav-i gm-today">
+            <a title="{{ 'Today'|t }}" href="{{ path('gm_agenda.agenda_today.' ~ current_langcode) }}">{{ 'Today'|t }}</a>
+          </li>
+          <li class="gm-nav-i gm-upcoming">
+            <a title="{{ 'Upcommings events'|t }}" href="{{ path('gm_agenda.agenda') }}">{{ 'Upcommings events'|t }}</a>
+          </li>
+          <li class="gm-nav-i gm-between">
+            {% set current_year = 'now'|date(format="Y") %}
+            {% set current_month = 'now'|date(format="m") %}
+            {% set current_month_name = 'now'|date(format="F") %}
+            {% set month = current_month_name|t %}
+            <a title="{{ 'Upcommings events'|t }}" href="{{ path('gm_agenda.agenda_by_month', {'month': current_month, 'year': current_year}) }}">
+              {% trans %}{{month}} Events{% endtrans %}
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,11 @@
+gm-agenda-design:
+  js:
+    js/gm-agenda-design.js: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+    - core/drupal
+    - core/drupalSettings
+  css:
+    theme:
+      'css/gm-agenda-design.css': {}

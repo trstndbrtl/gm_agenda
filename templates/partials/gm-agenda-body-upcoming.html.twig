@@ -1,0 +1,31 @@
+<div id="gm-main-agenda-wrapper">
+  {% if node_list and node_list is not empty %}
+    {% for key, node in node_list %}
+      {% set day_to_show_date = node.is_class[0] %}
+      <div class="gm-a-w-date gm-w-{{day_to_show_date}}">
+        <div class="gm-a-item-date">
+          <div class="gm-a-item-stiky" uk-sticky="bottom: true; offset: 100">
+            <div class="gm-d-w">
+              {% set day_to_show = day_to_show_date == 'start' ? node.date.start.day : node.date.end.day %}
+              {% set month_to_show = day_to_show_date == 'start' ? node.date.start.month : node.date.end.month %}
+              {% set year_to_show = day_to_show_date == 'start' ? node.date.start.year : node.date.end.year %}
+              <div class="gm-d-day">{{day_to_show}}</div>
+              <div class="gm-d-month">{{month_to_show}}</div>
+              <div class="gm-d-year">{{year_to_show}}</div>
+            </div>
+          </div>
+        </div>
+        <div class="gm-a-items">
+          {% for ky, nd in node.nodes %}
+            {% set day_to_show = node.is_class[ky] %}
+            <div class="gm-a-item gm-{{day_to_show}}">
+              {{nd}}
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+      {# <div id="gm-main-agenda-wrapper"> {{ 'There is no     event for'|t }} {{current_data ? current_data.name|t : '' }} {{current_data ? current_data.year : ''}} {{regions_name ? 'In '|t ~ regions_name : null}}</div> #}
+  {% endif %}
+</div>

@@ -1,0 +1,5 @@
+services:
+  gm_agenda.subscriber:
+    class: Drupal\gm_agenda\EventSubscriber\AgendaRedirect
+    tags:
+      - { name: event_subscriber }

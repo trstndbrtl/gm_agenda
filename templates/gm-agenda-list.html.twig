@@ -1,0 +1,27 @@
+<div id="gm-main-agenda">
+    <div id="gm-main-agenda-msg">
+        {{ 'Your voice matters, don\'t miss your turn..'|t}}
+    </div>
+    <div id="gm-main-agenda-wrapper">
+        {% for key, node in node_list %}
+            <div class="gm-a-w-date">     
+                <div class="gm-a-item-date">
+                    <div class="gm-a-item-stiky" uk-sticky="bottom: true; offset: 100">
+                        <div class="gm-d-w">
+                            <div class="gm-d-day">{{node.date.d}}</div>
+                            <div class="gm-d-month">{{ node.date.m }}</div>
+                            <div class="gm-d-year">{{node.date.y}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="gm-a-items">
+                    {% for nd in node.nodes %}
+                        <div class="gm-a-item {{same_day}}{{same_day_separator}}">
+                            {{nd}}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>

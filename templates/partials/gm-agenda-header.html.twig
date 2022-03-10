@@ -1,0 +1,41 @@
+<div class="uk-section gm--primary gm-header">
+  <div class="uk-container uk-container-small">
+    <ul class="gm-header-wr gm-flex">
+      {% if prev_data and prev_data is not empty %}
+        <li class="gm-hdr-i gm-current-month-prev">
+          <a href="{{ path('gm_agenda.agenda_by_month', {'month': prev_data.month, 'year': prev_data.year}) }}"><i class="bi bi-arrow-left"></i> {{ prev_data.name }}</a>
+        </li>
+      {% endif %}
+      {% if current_data and current_data is not empty %}
+        <li class="gm-hdr-i gm-c-month">
+        {% set day = 'now'|date(format="d") %}
+        {% set month = current_data.name|t %}
+        {% set year = current_data.year %}
+        {% if is_today == 'today' %}
+          <h3>
+            {% trans %}
+              Events of {{day}} {{month}} {{year}}
+            {% endtrans %}
+          </h3>
+        {% elseif is_today == 'upcoming' %}
+          <h3>
+            {{ 'Upcoming events'|t }}
+          </h3>
+        {% else %}
+          <h3>
+            {% trans %}
+              {{month}} {{year}} Events
+            {% endtrans %}
+          </h3>
+        {% endif %}
+        </li>
+      {% endif %}
+
+      {% if next_data is not empty %}
+        <li class="gm-hdr-i gm-n-month">
+          <a href="{{ path('gm_agenda.agenda_by_month', {'month': next_data.month, 'year': next_data.year}) }}">{{ next_data.name }}<i class="bi bi-arrow-right"></i></a>
+        </li>
+      {% endif %}
+    </ul>
+  </div>
+</div>
